@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'logger'
+require 'rubygems'
+require 'deploytool'
+require 'deploytool/command'
+
+$logger = Logger.new STDOUT
+$logger.formatter = proc do |severity, datetime, progname, msg|
+  if severity == "ERROR"
+    "ERROR: #{msg}\n"
+  else
+    "#{msg}\n"
+  end
+end
+HighLine.track_eof = false
+
+args = ARGV.dup
+ARGV.clear
+command = args.shift.strip rescue 'help'
+
+DeployTool::Command.run(command, args)
