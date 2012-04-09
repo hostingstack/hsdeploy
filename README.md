@@ -1,4 +1,4 @@
-# hsdeploy - HostingStack Deploy Tool
+# hsdeploy
 
 Deployment tool for the HostingStack open-source PaaS, with special support for multi-stage deploys (e.g. for staging environments).
 
