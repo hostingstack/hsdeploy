@@ -1,16 +1,16 @@
 $:.unshift File.expand_path("../lib", __FILE__)
-require "deploytool/version"
+require "hsdeploy/version"
 
 Gem::Specification.new do |gem|
-  gem.name    = "deployto"
-  gem.version = DeployTool::VERSION
+  gem.name    = "hsdeploy"
+  gem.version = HSDeploy::VERSION
 
   gem.author      = "HostingStack"
   gem.email       = "maintainers@hostingstack.org"
   gem.homepage    = "http://hostingstack.org/"
   gem.summary     = "PaaS deployment tool."
   gem.description = "Deployment tool for web application platforms powered by HostingStack."
-  gem.executables = "deploy"
+  gem.executables = "hsdeploy"
 
   gem.files = %x{ git ls-files }.split("\n").select { |d| d =~ %r{^(README|bin/|data/|ext/|lib/|spec/|test/)} }
   

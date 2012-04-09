@@ -3,7 +3,7 @@ require "rubygems"
 require "bundler/setup"
 
 require 'rspec'
-require 'deploytool'
+require 'hsdeploy'
 require 'logger'
 
 RSpec.configure do |config|

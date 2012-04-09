@@ -1,36 +1,36 @@
-require 'deploytool/version'
+require 'hsdeploy/version'
 
-class DeployTool::Command
+class HSDeploy::Command
   COMMANDS = ["to", "logs", "import", "export", "config", "run"]
   
   def self.print_help
-      puts "Deploytool Version #{DeployTool::VERSION} Usage Instructions"
+      puts "HostingStack Deploytool Version #{HSDeploy::VERSION} Usage Instructions"
       puts ""
       puts "Add a target:"
-      puts "  deploy add production young-samurai-4@example.org"
-      puts "  deploy add staging green-flower-2@example.org"
+      puts "  hsdeploy add production young-samurai-4@example.org"
+      puts "  hsdeploy add staging green-flower-2@example.org"
       puts ""
       puts "Deploy the current directory to the target:"
-      puts "  deploy production"
+      puts "  hsdeploy production"
       puts ""
       puts "Run a command on the server:"
-      puts "  deploy run production rake db:migrate"
+      puts "  hsdeploy run production rake db:migrate"
   end
 
   def self.find_target(target_name)
-    unless (target = DeployTool::Config[target_name]) && !target.nil? && target.size > 0
+    unless (target = HSDeploy::Config[target_name]) && !target.nil? && target.size > 0
       puts "ERROR: Target \"#{target_name}\" is not configured"
       puts ""
       print_help
       exit
     end
-    [target_name, DeployTool::Target.from_config(target)]
+    [target_name, HSDeploy::Target.from_config(target)]
   end
 
   def self.handle_target_exception(e)
     $logger.debug e.inspect
     $logger.debug e.backtrace
-    $logger.info "\nAn Error (%s) occured. Please contact %s support: %s" % [e.inspect, DeployTool::Target::HostingStack.cloud_name, DeployTool::Target::HostingStack.support_email]
+    $logger.info "\nAn Error (%s) occured. Please contact %s support: %s" % [e.inspect, HSDeploy::Target::HostingStack.cloud_name, HSDeploy::Target::HostingStack.support_email]
     exit 2
   end
 
@@ -50,7 +50,7 @@ class DeployTool::Command
 
     change_to_toplevel_dir!
 
-    DeployTool::Config.load(".deployrc")
+    HSDeploy::Config.load(".hsdeployrc")
     
     if command == "help"
       print_help
@@ -67,7 +67,7 @@ class DeployTool::Command
         puts "Use \"deploy help\" if you're lost."
         exit
       end
-      unless target = DeployTool::Target.find(args[1])
+      unless target = HSDeploy::Target.find(args[1])
         puts "ERROR: Couldn't find provider for target \"#{args[1]}\""
         puts ""
         puts "Use \"deploy help\" if you're lost."
@@ -76,11 +76,11 @@ class DeployTool::Command
       if target.respond_to?(:verify)
         target.verify
       end
-      DeployTool::Config[args[0]] = target.to_h
+      HSDeploy::Config[args[0]] = target.to_h
     elsif command == "list"
       puts "Registered Targets:"
-      DeployTool::Config.all.each do |target_name, target|
-        target = DeployTool::Target.from_config(target)
+      HSDeploy::Config.all.each do |target_name, target|
+        target = HSDeploy::Target.from_config(target)
         puts "  %s%s" % [target_name.ljust(15), target.to_s]
       end
     elsif command == "run"
@@ -111,10 +111,10 @@ class DeployTool::Command
     end
 
     if target_name and target
-      DeployTool::Config[target_name] = target.to_h
+      HSDeploy::Config[target_name] = target.to_h
     end
 
-    DeployTool::Config.save
+    HSDeploy::Config.save
   rescue Net::HTTPServerException => e
     $logger.info "ERROR: HTTP call returned %s %s" % [e.response.code, e.response.message]
     if target
@@ -131,7 +131,7 @@ class DeployTool::Command
       $logger.debug "  %s: %s" % [k, v]
     end
     $logger.debug "\n  " + e.response.body.gsub("\n", "\n  ")
-    $logger.info "\nPlease run again with \"--debug\" and report the output at http://bit.ly/deploytool-new-issue"
+    $logger.info "\nPlease run again with \"--debug\" and report the output at http://j.mp/hsdeploy-issue"
     exit 2
   end
   

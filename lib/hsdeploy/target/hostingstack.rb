@@ -1,5 +1,5 @@
 require 'highline'
-class DeployTool::Target::HostingStack < DeployTool::Target
+class HSDeploy::Target::HostingStack < HSDeploy::Target
   SUPPORTED_API_VERSION = 4
   
   def self.cloud_name
@@ -7,7 +7,7 @@ class DeployTool::Target::HostingStack < DeployTool::Target
   end
   
   def self.support_email
-    @support_email || 'team@hostingstack.org'
+    @support_email || 'maintainers@hostingstack.org'
   end
   
   def self.parse_target_spec(target_spec)

@@ -1,6 +1,6 @@
 require 'inifile'
 
-class DeployTool::Config
+class HSDeploy::Config
   def self.all
     @@configfile.to_h
   end

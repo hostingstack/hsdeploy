@@ -22,7 +22,7 @@ class Module
   end
 end
 
-class DeployTool::Target
+class HSDeploy::Target
   track_subclasses
   
   def self.find(target_spec)
@@ -61,5 +61,5 @@ class DeployTool::Target
 end
 
 (Dir.glob(File.dirname(__FILE__)+'/target/*.rb') - [__FILE__]).sort.each do |f|
-  require 'deploytool/target/' + File.basename(f)
+  require 'hsdeploy/target/' + File.basename(f)
 end

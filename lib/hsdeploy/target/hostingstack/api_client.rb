@@ -11,7 +11,7 @@ require 'highline'
 CLIENT_ID = 'org.hostingstack.api.deploytool'
 CLIENT_SECRET = '11d6b5cc70e4bc9563a3b8dd50dd34f6'
 
-class DeployTool::Target::HostingStack
+class HSDeploy::Target::HostingStack
   class ApiError < StandardError
     attr_reader :response
     def initialize(response)
@@ -80,7 +80,7 @@ class DeployTool::Target::HostingStack
               end
             else
               tries += 1
-              $logger.info "Please specify your %s login data" % [DeployTool::Target::HostingStack.cloud_name]
+              $logger.info "Please specify your %s login data" % [HSDeploy::Target::HostingStack.cloud_name]
               email =    HighLine.new.ask("E-mail:   ")
               password = HighLine.new.ask("Password: ") {|q| q.echo = "*" }
               print "Authorizing..."
@@ -117,7 +117,7 @@ class DeployTool::Target::HostingStack
           exit 1
         rescue StandardError => e
           $logger.debug "ERROR: #{e.inspect}"
-          $logger.info "\nAn Error occured. Please try again in a Minute or contact %s support: %s" % [DeployTool::Target::HostingStack.cloud_name, DeployTool::Target::HostingStack.support_email]
+          $logger.info "\nAn Error occured. Please try again in a Minute or contact %s support: %s" % [HSDeploy::Target::HostingStack.cloud_name, HSDeploy::Target::HostingStack.support_email]
           puts ""
           tries += 1
         end
@@ -169,7 +169,7 @@ class DeployTool::Target::HostingStack
       ignore_regex = [
         /(^|\/).{1,2}$/,
         /(^|\/).git\//,
-        /^.deployrc$/,
+        /^.hsdeployrc$/,
         /^log\//,
         /(^|\/).DS_Store$/,
         /(^|\/)[^\/]+\.(bundle|o|so|rl|la|a)$/,
